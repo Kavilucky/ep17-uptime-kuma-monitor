@@ -1,0 +1,16 @@
+# Uptime Kuma: свой монитор сайтов и серверов (ролик 17)
+# Запуск:  cp .env.example .env  &&  docker compose up -d
+# Данные (база SQLite и настройки) лежат в папке ./data рядом с этим файлом.
+# Эту папку нужно копировать по правилу 3-2-1 (см. Инструкция.txt).
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:2
+    container_name: uptime-kuma
+    restart: unless-stopped
+    ports:
+      # по умолчанию только локально (127.0.0.1): наружу открывайте через SSH-туннель или обратный прокси с HTTPS
+      - "${KUMA_BIND:-127.0.0.1}:${KUMA_PORT:-3001}:3001"
+    environment:
+      - TZ=${TZ:-Europe/Moscow}
+    volumes:
+      - ./data:/app/data
